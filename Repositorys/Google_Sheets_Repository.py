@@ -6,7 +6,9 @@ from Bot.SashaShop.Interfaces import IProductRepository
 
 class GoogleSheetsProductRepository(IProductRepository):
     def __init__(self, credentials_path: str, spreadsheet_name: str, worksheet_name: str):
-        scopes = ["https://googleapis.com"]
+        scopes = [            "https://spreadsheets.google.com/feeds",
+                              "https://www.googleapis.com/auth/drive"
+                              ]
         creds = Credentials.from_service_account_file(credentials_path, scopes=scopes)
         self.client = gspread.authorize(creds)
         self.spreadsheet_name = spreadsheet_name
