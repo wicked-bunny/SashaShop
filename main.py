@@ -31,7 +31,6 @@ async def main():
     repo = GoogleSheetsProductRepository(
         credentials_path="credentials.json",
         spreadsheet_name="Sasha Shop Table",
-        worksheet_name="Products"
     )
 
     dp["repository"] = repo

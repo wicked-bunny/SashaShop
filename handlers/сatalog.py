@@ -1,17 +1,27 @@
-
-from aiogram import Router, types, F
-from Bot.SashaShop.Interfaces import  IProductRepository  # Залежимо ВІД ІНТЕРФЕЙСУ
+from aiogram import Router, types, F, Bot
+from Bot.SashaShop.Interfaces import IProductRepository
+from Bot.SashaShop.Keyboards import catalog_kb
+from Bot.SashaShop.callbacks import BuyProductCallback
 
 
 router = Router()
 
+
+@router.callback_query(F.data == "catalog")
 @router.message(F.text == "Каталог")
-async def info(message: types.Message, repository: IProductRepository):
-    # Код не знає, що це Google Sheets, він просто викликає метод інтерфейсу
-    products = repository.get_all_products()
+async def catalog(event: types.Message | types.CallbackQuery, repository: IProductRepository, bot: Bot):
+    # Визначаємо ID чату, куди відправляти фото
+    if isinstance(event, types.Message):
+        chat_id = event.chat.id
+    else:
+        await event.answer()  # Гасимо годинник на кнопці "Назад"
+        chat_id = event.message.chat.id
+
+    # Виправлено відступи та додано await для асинхронного запиту до Google Sheets
+    products = await repository.get_all_products()
 
     if not products:
-        await message.answer("Каталог наразі порожній.")
+        await bot.send_message(chat_id=chat_id, text="Каталог наразі порожній.")
         return
 
     for item in products:
@@ -21,8 +31,12 @@ async def info(message: types.Message, repository: IProductRepository):
             f"📝 Опис: {item['description']}"
         )
 
-        await message.answer_photo(
-            photo=item["photo"],  # Сюди підставиться File ID з таблиці
+        buy_callback = BuyProductCallback(action="buy", product_id=item["id"])
+
+        await bot.send_photo(
+            chat_id=chat_id,
+            photo=item["photo"],
             caption=text,
-            parse_mode="HTML"
-        )
+            parse_mode="HTML",
+            reply_markup=catalog_kb.generate_catalog_kb(buy_callback))
+
