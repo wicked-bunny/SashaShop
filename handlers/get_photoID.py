@@ -1,4 +1,3 @@
-# Додайте цей імпорт вгору файлу, якщо його немає
 
 from aiogram import Router, types, F
 from Bot.SashaShop.Interfaces import  IProductRepository  # Залежимо ВІД ІНТЕРФЕЙСУ

@@ -6,6 +6,8 @@ from aiogram import Bot, Dispatcher
 from dotenv import load_dotenv
 from handlers import register_routers
 from Repositorys.Google_Sheets_Repository import GoogleSheetsProductRepository
+from Bot.SashaShop.database.models import BaseModel
+from Bot.SashaShop.database import engine
 import logging
 import sys
 
@@ -23,6 +25,9 @@ ENV_PATH = Path(__file__).resolve().parent.parent.parent / "BotProjectOne_Token.
 load_dotenv(dotenv_path=ENV_PATH)
 
 TOKEN = os.getenv("TOKEN")
+async  def init_model():
+    async  with engine.begin() as conn:
+        await conn.run_sync(BaseModel.metadata.create_all)
 
 async def main():
     print("бота запущено")
