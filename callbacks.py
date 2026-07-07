@@ -1,7 +1,7 @@
 from aiogram.filters.callback_data import CallbackData
 
 
-# Фабрика для безпечної передачі ID товару в кнопку
+# A system for securely transmitting product IDs to a button
 class BuyProductCallback(CallbackData, prefix="buy_prod"):
     action: str
     product_id: int
