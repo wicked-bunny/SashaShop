@@ -1,10 +1,10 @@
 from aiogram import Dispatcher
-from Bot.SashaShop.handlers.start import router as start_router
-from Bot.SashaShop.handlers.сatalog import router as catalog_router
-from Bot.SashaShop.handlers.profil import router as profil_router
-from Bot.SashaShop.handlers.get_photoID import router as get_photoID_router
-from Bot.SashaShop.handlers.info import router as info_router
-from Bot.SashaShop.handlers.buy import router as buy_router
+from handlers.start import router as start_router
+from handlers.сatalog import router as catalog_router
+from handlers.profil import router as profil_router
+from handlers.get_photoID import router as get_photoID_router
+from handlers.info import router as info_router
+from handlers.buy import router as buy_router
 
 
 

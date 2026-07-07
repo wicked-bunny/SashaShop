@@ -1,34 +1,34 @@
 from aiogram import Router, types, F, Bot
-from Bot.SashaShop.Interfaces import IProductRepository
-from Bot.SashaShop.Keyboards import catalog_kb
-from Bot.SashaShop.callbacks import BuyProductCallback
+from Interfaces import IProductRepository
+from Keyboards import catalog_kb
+from callbacks import BuyProductCallback
 
 
 router = Router()
 
 
 @router.callback_query(F.data == "catalog")
-@router.message(F.text == "Каталог")
+@router.message(F.text == "Catalog")
 async def catalog(event: types.Message | types.CallbackQuery, repository: IProductRepository, bot: Bot):
-    # Визначаємо ID чату, куди відправляти фото
+    # Determine the ID of the chat where the photo should be sent
     if isinstance(event, types.Message):
         chat_id = event.chat.id
     else:
-        await event.answer()  # Гасимо годинник на кнопці "Назад"
+        await event.answer()  # Press the "Back" button to turn off the clock
         chat_id = event.message.chat.id
 
-    # Виправлено відступи та додано await для асинхронного запиту до Google Sheets
+    # Fixed indentation and added `await` for an asynchronous request to Google Sheets
     products = await repository.get_all_products()
 
     if not products:
-        await bot.send_message(chat_id=chat_id, text="Каталог наразі порожній.")
+        await bot.send_message(chat_id=chat_id, text="The catalog is currently empty.")
         return
 
     for item in products:
         text = (
             f"🛍 <b>{item['name']}</b>\n\n"
-            f"💰 Ціна: {item['price']} грн\n"
-            f"📝 Опис: {item['description']}"
+            f"💰 Price: {item['price']} €\n"
+            f"📝 Description: {item['description']}"
         )
 
         buy_callback = BuyProductCallback(action="buy", product_id=item["id"])

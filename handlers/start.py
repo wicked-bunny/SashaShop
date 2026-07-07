@@ -1,13 +1,13 @@
 from aiogram import Router,types
 from aiogram.filters import Command
-from Bot.SashaShop.Keyboards.Menu import main_menu_kb
+from Keyboards.Menu import main_menu_kb
 router = Router()
 
 
 @router.message(Command("start"))
 async def start_bot(message: types.Message):
     await message.answer(
-        f"Привіт, {message.from_user.first_name} це магазин [НАЗВА МАГАЗИНУ]",
+        f"Hi, {message.from_user.first_name} This is the [STORE NAME] store",
             reply_markup=main_menu_kb()
     )
 

@@ -1,7 +1,7 @@
 from sqlalchemy import BigInteger
 from sqlalchemy.orm import mapped_column, Mapped
 
-from Bot.SashaShop.database.models import BaseModel
+from database.models import BaseModel
 
 
 class User(BaseModel):

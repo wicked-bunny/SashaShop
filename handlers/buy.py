@@ -1,15 +1,15 @@
 from aiogram import Router,F,types
 
-from Bot.SashaShop.handlers.сatalog import BuyProductCallback
+from handlers.сatalog import BuyProductCallback
 
 router = Router()
 
 @router.callback_query(BuyProductCallback.filter(F.action == "buy"))
 async def process_buy_product(callback: types.CallbackQuery, callback_data: BuyProductCallback):
-    await callback.answer()  # Гасимо годинник на кнопці "Купити"
+    await callback.answer()  # Click the "Buy" button to complete the purchase
 
-    # Автоматично отримуємо ID товару у правильному типі (int)
+    # We automatically retrieve the product ID in the correct type (int)
     product_id = callback_data.product_id
 
-    # TODO: Тут потрібно отримати товар за ID з репозиторію та надіслати реквізити/форму замовлення
+    # TODO: Here, you need to retrieve the item by its ID from the repository and submit the payment details/order form
     await callback.message.answer(f"Ви обрали товар з ID: {product_id}. Готуємо замовлення...")

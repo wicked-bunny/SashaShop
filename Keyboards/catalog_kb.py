@@ -1,5 +1,5 @@
 from aiogram.types import InlineKeyboardButton,InlineKeyboardMarkup
-from Bot.SashaShop.callbacks import BuyProductCallback
+from callbacks import BuyProductCallback
 
 
 def generate_catalog_kb(buy_callback: BuyProductCallback) -> InlineKeyboardMarkup:
@@ -8,7 +8,7 @@ def generate_catalog_kb(buy_callback: BuyProductCallback) -> InlineKeyboardMarku
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text="Купити 💳", callback_data=buy_callback.pack())
+                InlineKeyboardButton(text="Buy 💳", callback_data=buy_callback.pack())
             ]
         ]
     )

@@ -1,13 +1,12 @@
 import asyncio
 import os
-from pathlib import Path
 
 from aiogram import Bot, Dispatcher
 from dotenv import load_dotenv
 from handlers import register_routers
 from Repositorys.Google_Sheets_Repository import GoogleSheetsProductRepository
-from Bot.SashaShop.database.models import BaseModel
-from Bot.SashaShop.database import engine
+from database.models import BaseModel
+from database import engine
 import logging
 import sys
 
@@ -21,7 +20,7 @@ logging.basicConfig(
 )
 
 # Динамічно знаходимо файл .env на один рівень вище від main.py
-ENV_PATH = Path(__file__).resolve().parent.parent.parent / "BotProjectOne_Token.env"
+ENV_PATH = "BotToken.env"
 load_dotenv(dotenv_path=ENV_PATH)
 
 TOKEN = os.getenv("TOKEN")

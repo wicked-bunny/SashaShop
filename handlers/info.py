@@ -1,15 +1,15 @@
 from aiogram import Router,F,types
-from Bot.SashaShop.Repositorys.Google_Sheets_Repository import IProductRepository
+from Repositorys.Google_Sheets_Repository import IProductRepository
 import logging
 
 router = Router()
 
-@router.message(F.text == "Інформація")
+@router.message(F.text == "Information")
 async def info(message: types.Message, repository: IProductRepository):
     tabs = await repository.get_all_main_tabs()
     if  not tabs:
         logging.error("Tabs not found")
-        await message.answer("Вибачте, наразі цей ресурс недоступний.")
+        await message.answer("We're sorry, but this resource is currently unavailable.")
         return #
     profile_data = None
     for tab in tabs:
@@ -22,5 +22,5 @@ async def info(message: types.Message, repository: IProductRepository):
     if profile_data:
         await message.answer(text=str(profile_data))
     else:
-        logging.warning(f"У отриманих вкладках немає ключа 'Profil'. Структура: {tabs}")
-        await message.answer("Цієї кнопки у даному ресурсі не існує або вона налаштована некоректно.")
+        logging.warning(f"There is no key in the received tabs 'Profil'. Structure: {tabs}")
+        await message.answer("This button does not exist on this site, or it is configured incorrectly.")
