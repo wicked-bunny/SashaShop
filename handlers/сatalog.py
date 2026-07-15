@@ -1,15 +1,16 @@
 from aiogram import Router, types, F, Bot
-from Interfaces import IProductRepository
+from repositories.unit_of_work import IUnitOfWork
 from Keyboards import catalog_kb
-from callbacks import BuyProductCallback
-
+from callbacks import BuyProductCallback, MainTabsCallback
+from lexicon import ErrorEN, LexiconEN
 
 router = Router()
 
 
-@router.callback_query(F.data == "catalog")
+
 @router.message(F.text == "Catalog")
-async def catalog(event: types.Message | types.CallbackQuery, repository: IProductRepository, bot: Bot):
+@router.callback_query(MainTabsCallback.filter(F.target == "catalog"))
+async def catalog(event: types.Message | types.CallbackQuery, unit_of_work: IUnitOfWork, bot: Bot):
     # Determine the ID of the chat where the photo should be sent
     if isinstance(event, types.Message):
         chat_id = event.chat.id
@@ -17,26 +18,23 @@ async def catalog(event: types.Message | types.CallbackQuery, repository: IProdu
         await event.answer()  # Press the "Back" button to turn off the clock
         chat_id = event.message.chat.id
 
-    # Fixed indentation and added `await` for an asynchronous request to Google Sheets
-    products = await repository.get_all_products()
+    products = await unit_of_work.items.get_all()
 
     if not products:
-        await bot.send_message(chat_id=chat_id, text="The catalog is currently empty.")
+        await bot.send_message(chat_id=chat_id, text=ErrorEN.empty_catalog())
         return
 
     for item in products:
-        text = (
-            f"🛍 <b>{item['name']}</b>\n\n"
-            f"💰 Price: {item['price']} €\n"
-            f"📝 Description: {item['description']}"
-        )
+        # Text under the item image
+        text = LexiconEN.item_description_text(name=item.name, price=item.price, description=item.description)
 
-        buy_callback = BuyProductCallback(action="buy", product_id=item["id"])
+        #create callback for "Buy" button
+        buy_callback = BuyProductCallback(action="buy", product_id=item.id)
 
         await bot.send_photo(
             chat_id=chat_id,
-            photo=item["photo"],
+            photo=item.file_id,
             caption=text,
             parse_mode="HTML",
+            # passing callback on
             reply_markup=catalog_kb.generate_catalog_kb(buy_callback))
-

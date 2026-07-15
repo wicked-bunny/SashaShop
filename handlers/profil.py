@@ -1,16 +1,18 @@
 from aiogram import Router, types, F
 import logging
-from Interfaces import IProductRepository
+from repositories.unit_of_work import IUnitOfWork
+from lexicon import ErrorEN
 
 router = Router()
 
 
 @router.message(F.text == "Profile")
-async def catalog(message: types.Message, repository: IProductRepository):
-    tabs = await repository.get_all_main_tabs()
+async def profil(message: types.Message, unit_of_work: IUnitOfWork):
+    tabs = await unit_of_work.category.get_all()
+
     if  not tabs:
         logging.error("Tabs not found")
-        await message.answer("We're sorry, but this resource is currently unavailable.")
+        await message.answer(ErrorEN.currently_unavailable())
         return #
     profile_data = None
     for tab in tabs:
