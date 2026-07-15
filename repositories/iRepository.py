@@ -14,6 +14,10 @@ class IRepository(ABC, Generic[T]):
         """Returns one record from table by its ID"""
         pass
     @abstractmethod
+    async def update_by_id(self, obj_id: int, data: dict) -> bool:
+        """Updates one record from table by its ID"""
+        pass
+    @abstractmethod
     async def add(self, entity: T) -> T:
         """adds a new object"""
         pass
