@@ -1,6 +1,5 @@
 import asyncio
 import os
-from pathlib import Path
 
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy import text
@@ -12,9 +11,10 @@ from database.models import BaseModel
 import logging
 import sys
 
+from utils.SetMainMenu import set_start_button
 
 logging.basicConfig(
-    level=logging.DEBUG,  # Показуватиме всі важливі події та оновлення
+    level=logging.INFO,  # Показуватиме всі важливі події та оновлення
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
     handlers=[
         logging.StreamHandler(sys.stdout)  # Виводити лог прямо в консоль PyCharm
@@ -49,6 +49,9 @@ async def main():
     print("starting...")
     bot = Bot(token=TOKEN)
     dp = Dispatcher()
+
+    #set default "/start" button
+    await set_start_button(bot)
 
     # register handlers and middlewares
     register_routers(dp)

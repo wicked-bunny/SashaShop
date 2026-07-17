@@ -33,7 +33,7 @@ _____________________________________
 🚀 <b>Tech Stack Used:</b>
 • <b>Language:</b> Python 3.11+
 • <b>Framework:</b> Aiogram 3.x (Async)
-• <b>Database:</b> PostgreSQL / SQLite
+• <b>Database:</b> SQLite
 • <b>ORM:</b> SQLAlchemy 2.0 (Async)
 • <b>Architecture:</b> Repository & Unit of Work (UoW) patterns
 
@@ -43,11 +43,13 @@ _____________________________________
 • Secure session & state management (FSM)
 • Scalable & clean code structure
 
-👨‍💻 <b>Developer:</b> [Your Name / Nickname]
-🌐 <b>GitHub:</b> <a href="https://github.com/wicked-bunny/E-CommerceTelegramBot">://github.com</a>
+👨‍💻 <b>Developer:</b> WickedBunny
+🌐 <b>GitHub:</b> <a href="https://github.com/wicked-bunny/E-CommerceTelegramBot">://https://github.com/wicked-bunny/E-CommerceTelegramBot</a>
 
 <i>Thank you for testing my bot! Feel free to check out the source code on GitHub.</i>"""
-
+    @staticmethod
+    def set_main_menu_button() -> str :
+        return "start"
 class ErrorEN:
     @staticmethod
     def currently_unavailable() -> str:
