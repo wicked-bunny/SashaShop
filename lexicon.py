@@ -50,6 +50,10 @@ _____________________________________
     @staticmethod
     def set_main_menu_button() -> str :
         return "start"
+    @staticmethod
+    def choose_category()-> str:
+        return "🗂️Choose a category:"
+
 class ErrorEN:
     @staticmethod
     def currently_unavailable() -> str:
